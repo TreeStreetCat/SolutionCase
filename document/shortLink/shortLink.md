@@ -102,15 +102,17 @@ server {
 
 <br>
 
+当然，`Yourls` 已经提供一些插件，打开 `Manage Plugins`，激活一下 `Random ShortURLs`，改变短链码的转换方式，默认是将长链接转换以自增 `id` 。
+
+![](images/3.jpg)
 
 
 
 
 
+参考博客：https://www.cnblogs.com/rickiyang/p/12178644.html
 
-
-
-
+https://cloud.tencent.com/developer/article/1762482
 
 
 

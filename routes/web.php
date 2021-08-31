@@ -22,3 +22,6 @@ use App\Http\Controllers\ShortLink\ShortLinkController;
 Route::group(['namespace' => ''], function() {
     Route::get('/test', [ShortLinkController::class, 'test']);
 });
+Route::get('index/{id}', function ($id) {
+    return 'Hello, World!'.$id;
+});
