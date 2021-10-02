@@ -23,5 +23,6 @@ Route::group(['namespace' => ''], function() {
     Route::get('/test', [ShortLinkController::class, 'test']);
 });
 Route::get('index/{id}', function ($id) {
+    return PHP_VERSION;
     return 'Hello, World!'.$id;
 });
