@@ -5,18 +5,18 @@
 
 
 
-## 二、抽奖活动
+## 二、简易抽奖功能
 
 **需求：**
 
-共有 4 种礼品，每种礼品中奖的概率以及库存如下：
+共有 4 种奖品，每种礼品奖品的概率以及库存如下：
 
-| 奖品名 | 概率 | 库存 |
-| ------ | ---- | ---- |
-| A      | 70%  | 不限 |
-| B      | 20%  | 不限 |
-| C      | 15%  | 20   |
-| D      | 5%   | 10   |
+| 奖品名 | 概率  | 库存 |
+| ------ | ----- | ---- |
+| A      | 70%   | 不限 |
+| B      | 13.5% | 不限 |
+| C      | 10%   | 20   |
+| D      | 6.5%  | 10   |
 
 <br>
 
@@ -32,31 +32,23 @@
 **数据库设计：**
 
 ```shell
-CREATE TABLE `lottery_prizes` (
+CREATE TABLE `sc_lottery_prizes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `prize_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '奖品名',
+  `source` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '抽奖期数',
+  `probability` int NOT NULL DEFAULT '0' COMMENT '中奖概率',
   `stock_count` int unsigned NOT NULL COMMENT '库存数量',
+  `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `sc_lottery_prizes_source_index` (`source`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 
 
 
-
-循环 
-
-获取奖品的数字 80
-
-获取随机的数字 88 
-
-
-
-1-80 = 20
-
-rand(1, 20)
 
 
 

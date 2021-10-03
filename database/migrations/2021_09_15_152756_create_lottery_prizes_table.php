@@ -17,8 +17,9 @@ class CreateLotteryPrizesTable extends Migration
             $table->bigIncrements('id');
             $table->string('prize_name', 20)->comment('奖品名');
             $table->string('source', 20)->comment('抽奖期数');
-            $table->integer('probability')->default(0)->comment('中奖概率');
+            $table->integer('probability')->default(0)->comment('中奖概率，7000表示70%，650表示6.5%');
             $table->unsignedInteger('stock_count')->comment('库存数量');
+            $table->index('source');
             $table->softDeletes();
             $table->timestamps();
         });

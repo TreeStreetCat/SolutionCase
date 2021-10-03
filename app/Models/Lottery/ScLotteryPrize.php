@@ -21,7 +21,15 @@ class ScLotteryPrize extends Model
 
     protected $table = 'sc_lottery_prizes';
 
-    public function draw($source){
+    protected $guarded = [];
+
+    /**
+     * 获取中奖奖品
+     *
+     * @param $source
+     * @return mixed
+     */
+    public function getWinnerPrize($source){
         // 1. 获取所有奖品
        $scLotteryPrizes = ScLotteryPrize::where('source', $source)->get();
        // 2. 获奖的总概率
@@ -29,20 +37,21 @@ class ScLotteryPrize extends Model
        // 3. 循环 抽奖
        foreach ($scLotteryPrizes as $scLotteryPrize){
            // 获取当前的概率数字
-           $lotteryNum = $this->randFloat(1, $probability);
-           \Log::info("当前概率数字：".$lotteryNum." 获奖总概率：".$probability);
-           if ($probability <= $lotteryNum){
+           $lotteryNum = mt_rand(1, $probability);
+           \Log::info("当前概率数字：".$lotteryNum." 当前奖品 ".$scLotteryPrize->prize_name." 概率：".$scLotteryPrize->probability." 获奖总概率：".$probability);
+           if ($lotteryNum <= $scLotteryPrize->probability){
                // 3.1 检查库存
                if ($scLotteryPrize->stock_count > 0){
                    // 3.1 中奖，返回奖品
                    return $scLotteryPrize;
                }
                // 3.2 无库存，未中奖，减去当前概率
-               $probability -= $lotteryNum;
+               $probability -= $scLotteryPrize->probability;
            }else{
                // 3.3 未中奖，减去当前概率
-               $probability -= $lotteryNum;
+               $probability -= $scLotteryPrize->probability;
            }
        }
     }
+
 }
