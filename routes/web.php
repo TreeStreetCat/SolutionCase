@@ -22,7 +22,12 @@ use App\Http\Controllers\ShortLink\ShortLinkController;
 Route::group(['namespace' => ''], function() {
     Route::get('/test', [ShortLinkController::class, 'test']);
 });
-Route::get('index/{id}', function ($id) {
-    return PHP_VERSION;
-    return 'Hello, World!'.$id;
+
+
+//Route::get('/index', 'App\Http\Controllers\Laravel\TestController@index');
+//Route::get('/read/{id}', 'App\Http\Controllers\Laravel\TestController@read');
+
+Route::group(['namespace' => 'App\Http\Controllers\Laravel'],function (){
+    Route::get('/index', 'TestController@index');
+    Route::get('/read/{id}', 'TestController@read');
 });

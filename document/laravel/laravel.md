@@ -105,3 +105,72 @@ Route::get('index/{id}', function ($id) {
 访问 `http://127.0.0.1:8000/index/123456`
 
 ![](images/4.png)
+
+上面的例子中，`{id}` 表示在 `url` 中的动态参数。
+
+<br>
+
+### 2.2 创建控制器
+
+我们可以在项目的根目录命令行处，敲下
+
+```shell
+$ php artisan make:controller Laravel/TestController
+```
+
+控制器目录在 `app\Http\Controllers`  下，上述命令会在 `app\Http\Controllers `目录下创建 `Laravel/TestController.php`  控制器。
+
+![](images/5.jpg)
+
+<br>
+
+使用该方法创建 控制器，会自动生成命名空间
+
+```php
+<?php
+
+namespace App\Http\Controllers\Laravel;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class TestController extends Controller
+{
+    public function index(){
+        return "index";
+    }
+
+    public function read($id){
+        return "id:".$id;
+    }
+}
+```
+
+<br>
+
+**通过配置路由来访问创建好的控制器。**
+
+在 `config/web.php` 中添加
+
+```php
+Route::get('/index', 'App\Http\Controllers\Laravel\TestController@index');
+Route::get('/read/{id}', 'App\Http\Controllers\Laravel\TestController@read');
+
+# 或者以路由组的形式
+
+Route::group(['namespace' => 'App\Http\Controllers\Laravel'],function (){
+    Route::get('/index', 'TestController@index');
+    Route::get('/read/{id}', 'TestController@read');
+});
+```
+
+<br>
+
+### 2.3 路由参数
+
+**对路由进行参数约束**
+
+在 [2.1 什么是路由？](# 2.1 什么是路由？) 章节里，最后的例子里我们使用了 动态参数，有时候对于这些参数，需要做一些限制，我们可以使用正则表达式来限制必须是 数字。
+
+
+

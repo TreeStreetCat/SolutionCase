@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\lottery;
+namespace App\Http\Controllers\Lottery;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
