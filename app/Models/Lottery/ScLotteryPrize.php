@@ -2,6 +2,7 @@
 
 namespace App\Models\Lottery;
 
+use App\Http\Traits\RedisLock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,7 @@ use App\Http\Traits\RandNum;
  */
 class ScLotteryPrize extends Model
 {
-    use HasFactory, SoftDeletes, RandNum;
+    use HasFactory, SoftDeletes, RandNum, RedisLock;
 
     protected $connection = 'mysql_lottery';
 
@@ -54,4 +55,28 @@ class ScLotteryPrize extends Model
        }
     }
 
+    /**
+     * 抽奖
+     *
+     * @param $source
+     */
+    public function draw($source){
+        try{
+            // lock 加锁
+            $this->init("lottery", $source);
+            $this->addLock();
+            // 获取中奖奖品
+            $scLotteryPrize = $this->getWinnerPrize($source);
+            // 减库存
+            if (isset($scLotteryPrize) && $scLotteryPrize->stock_count > 0){
+                $scLotteryPrize->stock_count = $scLotteryPrize->stock_count - 1;
+                $scLotteryPrize->save();
+            }
+        }catch (\Exception $e){
+            \Log::error($e->getFile() . ' ' . $e->getLine() . ': ' . $e->getMessage());
+        } finally {
+            // lock 解锁
+            $this->unlock();
+        }
+    }
 }
