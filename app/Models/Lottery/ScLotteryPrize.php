@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Traits\RandNum;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 抽奖 model
@@ -59,6 +60,7 @@ class ScLotteryPrize extends Model
      * 抽奖
      *
      * @param $source
+     * @throws \Exception
      */
     public function draw($source){
         try{
@@ -67,13 +69,17 @@ class ScLotteryPrize extends Model
             $this->addLock();
             // 获取中奖奖品
             $scLotteryPrize = $this->getWinnerPrize($source);
+            DB::beginTransaction();
             // 减库存
             if (isset($scLotteryPrize) && $scLotteryPrize->stock_count > 0){
                 $scLotteryPrize->stock_count = $scLotteryPrize->stock_count - 1;
                 $scLotteryPrize->save();
             }
+            DB::commit();
         }catch (\Exception $e){
             \Log::error($e->getFile() . ' ' . $e->getLine() . ': ' . $e->getMessage());
+            DB::rollBack();
+            throw $e;
         } finally {
             // lock 解锁
             $this->unlock();
