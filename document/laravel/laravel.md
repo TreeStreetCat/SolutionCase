@@ -164,13 +164,26 @@ Route::group(['namespace' => 'App\Http\Controllers\Laravel'],function (){
 });
 ```
 
+当然，在 `Laravel 8` 中可以使用标准的PHP可调用语法定义控制器路由：
+
+```php
+use App\Http\Controllers\Laravel;
+
+Route::get('/index', [Laravel\TestController::class, 'index']);
+Route::get('/read/{id}', [Laravel\TestController::class, 'read']);
+```
+
+
+
+参考链接：https://learnku.com/laravel/t/49996
+
 <br>
 
 ### 2.3 路由参数
 
 **对路由进行参数约束**
 
-在 [2.1 什么是路由？](# 2.1 什么是路由？) 章节里，最后的例子里我们使用了 动态参数，有时候对于这些参数，需要做一些限制，我们可以使用正则表达式来限制必须是 数字。
+在 [2.1 什么是路由？](# 2.1 什么是路由？) 章节里，最后的例子里我们使用了 动态参数，有时候对于这些参数，需要做一些限制，我们可以使用正则表达式来限制必须是 **数字**。
 
 
 
