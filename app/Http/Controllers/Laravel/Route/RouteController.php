@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Laravel;
+namespace App\Http\Controllers\Laravel\Route;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class RouteController extends Controller
 {
     public function index(){
         return "index";

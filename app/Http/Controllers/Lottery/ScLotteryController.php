@@ -12,7 +12,7 @@ class ScLotteryController extends Controller
     public function draw(Request $request, $source){
         try {
             (new ScLotteryPrize())->draw($source);
-            CommonCode::
+
         }catch (\Exception $e){
 
         }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Laravel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,13 +24,5 @@ Route::group(['namespace' => ''], function() {
 });
 
 
-//Route::get('/index', 'App\Http\Controllers\Laravel\TestController@index');
-//Route::get('/read/{id}', 'App\Http\Controllers\Laravel\TestController@read');
+include base_path('routes/laravel/laravel_route.php');
 
-//Route::group(['namespace' => 'App\Http\Controllers\Laravel'],function (){
-//    Route::get('/index', 'TestController@index');
-//    Route::get('/read/{id}', 'TestController@read');
-//});
-
-Route::get('/index', [Laravel\TestController::class, 'index']);
-Route::get('/read/{id}', [Laravel\TestController::class, 'read']);

@@ -115,7 +115,7 @@ Route::get('index/{id}', function ($id) {
 我们可以在项目的根目录命令行处，敲下
 
 ```shell
-$ php artisan make:controller Laravel/TestController
+$ php artisan make:controller Laravel/RouteController
 ```
 
 控制器目录在 `app\Http\Controllers`  下，上述命令会在 `app\Http\Controllers `目录下创建 `Laravel/TestController.php`  控制器。
@@ -159,8 +159,8 @@ Route::get('/read/{id}', 'App\Http\Controllers\Laravel\TestController@read');
 # 或者以路由组的形式
 
 Route::group(['namespace' => 'App\Http\Controllers\Laravel'],function (){
-    Route::get('/index', 'TestController@index');
-    Route::get('/read/{id}', 'TestController@read');
+    Route::get('/index', 'RouteController@index');
+    Route::get('/read/{id}', 'RouteController@read');
 });
 ```
 
@@ -169,8 +169,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Laravel'],function (){
 ```php
 use App\Http\Controllers\Laravel;
 
-Route::get('/index', [Laravel\TestController::class, 'index']);
-Route::get('/read/{id}', [Laravel\TestController::class, 'read']);
+Route::get('/index', [Laravel\RouteController::class, 'index']);
+Route::get('/read/{id}', [Laravel\RouteController::class, 'read']);
 ```
 
 
@@ -183,7 +183,57 @@ Route::get('/read/{id}', [Laravel\TestController::class, 'read']);
 
 **对路由进行参数约束**
 
-在 [2.1 什么是路由？](# 2.1 什么是路由？) 章节里，最后的例子里我们使用了 动态参数，有时候对于这些参数，需要做一些限制，我们可以使用正则表达式来限制必须是 **数字**。
+在 [2.1 什么是路由？](# 2.1 什么是路由？) 章节里，最后的例子里我们使用了 **动态参数**，有时候对于这些参数，需要做一些限制，我们可以使用正则表达式来限制必须是 **数字**。
+
+单个参数
+
+```php
+Route::get('/read/{id}/{name}', [Laravel\Route\RouteController::class, 'read'])->where('id','[0-9]+');
+```
+ 或者 多个参数
+```php
+Route::get('/read/{id}/{name}', [Laravel\Route\RouteController::class, 'read'])->where(['id'=>'[0-9]+', 'name'=>'[a-z]+']);
+```
+
+<br>
+
+如果想让约束 id 只能是 0-9 之间作用域全局范围，可以在模型绑定器里设置
+
+`app\Providers\RouteServiceProvider` 的 `boot()` 方法
+
+```php
+public function boot() { 
+  // ...
+  Route::pattern('id', '[0-9]+'); 
+}
+```
+
+<br>
+
+当然，如果已经设置了全局限制，某个路由想脱离这个全局约束，就可以如下操作。
+
+```php
+->where('id', '.*')
+```
+
+<br>
+
+### 2.4 路由重定向
+
+`Laravel` 可以设置一个路由跳转到另一个路由，如下：
+
+```php
+Route::redirect("/index", "/read/1"); # 默认状态码 302
+Route::redirect("/index", "/read/1", 301); # 可以自己定义状态码，比如定义 301
+```
+
+访问 `127.0.0.1:8000/index` 就会自动跳转到 `127.0.0.1:8000/read/1`
+
+<br>
+
+### 2.5 路由分组
+
+
 
 
 
