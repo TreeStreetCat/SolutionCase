@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Laravel;
 
-// 二 路由
+//=============================== 二 路由 =======================================================
 //Route::get('/index', 'App\Http\Controllers\Laravel\RouteController@index');
 //Route::get('/read/{id}', 'App\Http\Controllers\Laravel\RouteController@read');
 //
