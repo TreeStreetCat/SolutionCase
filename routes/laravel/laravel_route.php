@@ -19,4 +19,4 @@ Route::get('/index', [Laravel\Route\RouteController::class, 'index']);
 Route::get('/read/{id}', [Laravel\Route\RouteController::class, 'read'])->where('id', '.*');
 //Route::get('/read/{id}', [Laravel\Route\RouteController::class, 'read']);
 
-Route::redirect("/index", "/read/1");
+//Route::redirect("/index", "/read/1");
