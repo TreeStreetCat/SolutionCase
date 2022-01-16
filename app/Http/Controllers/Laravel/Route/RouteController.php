@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class RouteController extends Controller
 {
     public function index(){
+
         return phpinfo();
         return __FUNCTION__."AA";
         return "index";
