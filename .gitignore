@@ -15,4 +15,5 @@ yarn-error.log
 /.vscode
 .DS_Store
 */.DS_Store
+_ide_helper.php
 

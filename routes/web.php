@@ -25,4 +25,5 @@ Route::group(['namespace' => ''], function() {
 
 
 include base_path('routes/laravel/laravel_route.php');
+include base_path('routes/lottery/lottery_route.php');
 

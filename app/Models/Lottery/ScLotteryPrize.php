@@ -2,18 +2,25 @@
 
 namespace App\Models\Lottery;
 
+use App\Http\Traits\RandNum;
 use App\Http\Traits\RedisLock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Traits\RandNum;
 use Illuminate\Support\Facades\DB;
 
 /**
  * 抽奖 model
  *
  * Class ScLotteryPrize
+ *
  * @package App\Models\Lottery
+ * @property int $id
+ * @property string $prize_name 奖品名
+ * @property string $source 抽奖期数
+ * @property int $probability 中奖概率
+ * @property int $stock_count 库存数量
+ * @mixin \Eloquent
  */
 class ScLotteryPrize extends Model
 {
@@ -64,7 +71,7 @@ class ScLotteryPrize extends Model
      */
     public function draw($source){
         try{
-            // lock 加锁
+            // lock 初始化+加锁
             $this->init("lottery", $source);
             $this->addLock();
             // 获取中奖奖品
