@@ -3,7 +3,6 @@
 namespace App\Exceptions\Base;
 
 use Exception;
-use Throwable;
 
 /**
  * 异常处理类
@@ -18,7 +17,7 @@ class BaseException extends Exception
 
     protected $data;
 
-    public function __construct($message, int $code = self::HTTP_OK, array $data = [])
+    public function __construct(int $code = self::HTTP_OK, $message = '',  array $data = [])
     {
         $this->data = $data;
         parent::__construct($message, $code);
@@ -28,17 +27,23 @@ class BaseException extends Exception
     {
         $content = [
             'code' => $this->code,
-            'data' => $this->data ,
-            'message' => $this->getErrorMessage($this->code),
+            'data' => $this->data,
+            'message' => empty($this->message) ? $this->getErrorMessage($this->code) : $this->message,
             'timestamp' => time()
         ];
 
         return response()->json($content);
     }
 
+    /**
+     * 获取错误message
+     *
+     * @param $code
+     * @return mixed
+     */
     function getErrorMessage($code)
     {
-        $err = require_once __DIR__.'/error.php';
+        $err = require_once __DIR__ . '/error.php';
         return $err[$code];
     }
 

@@ -6,6 +6,7 @@ namespace App\Http\Traits;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redis;
 
+
 trait RedisLock
 {
 
@@ -43,15 +44,25 @@ trait RedisLock
      * @param $source
      * @param $typeValue
      */
-    public function init($prefix, $source, $typeValue = "")
+    public function init($prefix, $source, $typeValue = "", $database = "default")
     {
         $this->prefixKey = $prefix;
         $this->source = $source;
+        $this->connection($database);
         if ($typeValue) {
             $this->lockKey = $prefix . ":" . $source . ":" . $typeValue;
         } else {
             $this->lockKey = $prefix . ":" . $source;
         }
+    }
+
+    /**
+     * 获取数据库连接
+     *
+     * @param $database
+     */
+    public function connection($database){
+        $this->redis = Redis::connection($database);
     }
 
     /**
@@ -61,7 +72,7 @@ trait RedisLock
      * @param int $time
      * @return bool
      */
-    public function addLock($time = 5)
+    public function addLock($time = 50)
     {
         $expireTime = Carbon::now()->addSeconds($time)->timestamp;
         if ($this->redis->setnx($this->lockKey, $expireTime)) {
