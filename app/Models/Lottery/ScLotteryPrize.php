@@ -40,7 +40,7 @@ class ScLotteryPrize extends Model
      */
     public function getWinnerPrize($source){
         // 1. 获取所有奖品
-       $scLotteryPrizes = ScLotteryPrize::where('source', $source)->get();
+       $scLotteryPrizes = ScLotteryPrize::where('source', $source)->select(['id', 'prize_name', 'probability', 'stock_count'])->get();
        // 2. 获奖的总概率
        $probability = $scLotteryPrizes->sum('probability');
        // 3. 循环 抽奖
@@ -67,7 +67,8 @@ class ScLotteryPrize extends Model
      * 抽奖
      *
      * @param $source
-     * @throws \Exception
+     * @return mixed
+     * @throws \Throwable
      */
     public function draw($source){
         try{
@@ -91,5 +92,6 @@ class ScLotteryPrize extends Model
             // lock 解锁
             $this->unlock();
         }
+        return $scLotteryPrize;
     }
 }

@@ -23,10 +23,10 @@ class ScLotteryController extends Controller
     public function draw(Request $request, $source){
         try {
             // 抽奖
-            (new ScLotteryPrize())->draw($source);
+            $scLotteryPrize = (new ScLotteryPrize())->draw($source);
         }catch (\Exception $e){
             throw new BaseException(ScLotteryCode::SCLOTTERY_DRAW_EXCEPTION);
         }
-        return $this->json_output(BaseCode::HTTP_OK, "抽奖成功");
+        return $this->json_output(BaseCode::HTTP_OK, "抽奖成功", ['id' => $scLotteryPrize->id, 'prize_name' => $scLotteryPrize->prize_name]);
     }
 }
